@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Color Guesser</title>
+	<link href="colorguesser.css" rel="stylesheet">
+	<script src="colorguesser.js" defer></script>
+</head>
+
+<body>
+	<main id="id-game-container">
+	
+		<div id="id-div-searched-color">Placeholder for color square</div>
+		
+		<div id="id-div-misc">
+			<p>Attempt no. <span id="id-span-attempt">1</span>/10</p>
+			<button id="id-button-submit">Submit</button>
+		</div>
+		
+		<div id="id-div-input-fields">
+			<div id="id-div-input-red" class="class-input">
+				<span>R</span>
+				<input id="id-range-red" class="class-range" 
+				type="range" min="0" max="255" value="128"></input>
+				<span>128</span>
+			</div>
+			
+			<div id="id-div-input-green" class="class-input">
+				<span>G</span>
+				<input id="id-range-green" class="class-range" 
+				type="range" min="0" max="255" value="128"></input>
+				<span>128</span>
+			</div>
+			
+			<div id="id-div-input-blue" class="class-input">
+				<span>B</span>
+				<input id="id-range-blue" class="class-range" 
+				type="range" min="0" max="255" value="128"></input>
+				<span>128</span>
+			</div>
+			
+		</div>
+		
+		<div id="id-div-attempts">Placeholder for attempted colors</div>
+		
+	</main>
+</body>
+
+</html>
