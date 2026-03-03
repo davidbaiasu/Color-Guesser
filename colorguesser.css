@@ -2,7 +2,14 @@ body{
 	background-color: #DECFAC;
 }
 
-#id-game-container{
+#id-div-color-square{
+	width: 100px;
+	height: 100px;
+	border: 2px solid;
+	background-color: white;
+}
+
+#id-div-searched-color{
 	
 }
 
