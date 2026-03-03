@@ -1,0 +1,35 @@
+body{
+	background-color: #DECFAC;
+}
+
+#id-game-container{
+	
+}
+
+#id-div-misc{
+
+}
+
+#id-para-attempt{
+
+}
+
+#id-button-submit{
+}
+
+#id-range-red{
+	accent-color: rgb(128,0,0);
+}
+
+#id-range-green{
+	accent-color: rgb(0,128,0);
+}
+
+#id-range-blue{
+	accent-color: rgb(0,0,128);
+}
+
+#id-div-misc{
+	display: flex;
+	flex-direction: row;
+}
