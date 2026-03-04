@@ -115,12 +115,11 @@ class Game{
 	}		
 	
 	changeView(direction) {
-		const newIndex = this.viewIndex + direction;
-
-		if ( newIndex >= 0 && newIndex < this.attemptsHistory.length ){
-			this.viewIndex = newIndex;
-			this.renderCurrentHistory();
+		if ( this.attemptsHistory.length === 0 ){
+			return;
 		}
+		this.viewIndex = (this.viewIndex + direction + this.attemptsHistory.length) % this.attemptsHistory.length;
+		this.renderCurrentHistory();
 	}		
 	
     checkGuess(){
