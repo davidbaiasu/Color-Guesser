@@ -1,42 +1,170 @@
-body{
-	background-color: #DECFAC;
+body {
+    background-color: #DECFAC;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: sans-serif;
 }
 
-#id-div-color-square{
-	width: 100px;
-	height: 100px;
-	border: 2px solid;
-	background-color: white;
+#id-game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px; 
+    width: 450px;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
-#id-div-searched-color{
-	
+#id-div-color-square {
+    width: 180px;
+    height: 180px;
+    border: 3px solid #333;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-#id-div-misc{
-
+.class-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
 }
 
-#id-para-attempt{
-
+.class-input span:first-child {
+    width: 20px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
-#id-button-submit{
+.class-range {
+    width: 200px;
 }
 
-#id-range-red{
-	accent-color: rgb(128,0,0);
+.class-input span:last-child {
+    width: 45px;
+    text-align: left;
+    font-size: 1.1rem;
 }
 
-#id-range-green{
-	accent-color: rgb(0,128,0);
+#id-div-misc {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
 }
 
-#id-range-blue{
-	accent-color: rgb(0,0,128);
+#id-para-attempt {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
-#id-div-misc{
-	display: flex;
-	flex-direction: row;
+#id-button-submit {
+    cursor: pointer;
+    padding: 10px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#id-range-red {
+    accent-color: rgb(128,0,0);
+}
+
+#id-range-green {
+    accent-color: rgb(0,128,0);
+}
+
+#id-range-blue {
+    accent-color: rgb(0,0,128);
+}
+
+#id-div-attempts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.class-nav-button {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s;
+}
+
+.class-nav-button:active {
+    transform: scale(0.9);
+}
+
+#id-placeholder-text {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    font-style: italic;
+    color: #333;
+}
+
+#id-current-history-display {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
+}
+
+.class-color-card {
+    width: 200px;
+    height: 60px;
+    border: 2px solid #000;
+    border-radius: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+    position: relative;
+}
+
+.class-card-label {
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #000;
+    text-shadow: 1px 1px 0 white;
+}
+
+.class-accuracy-box {
+    width: 70px;
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
 }
