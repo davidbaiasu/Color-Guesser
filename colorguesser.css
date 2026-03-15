@@ -51,9 +51,11 @@ body {
 }
 
 .class-input span:last-child {
-    width: 45px;
+    width: 80px;
     text-align: left;
     font-size: 1.1rem;
+    font-family: monospace; 
+    display: inline-block;
 }
 
 #id-div-misc {
@@ -135,34 +137,47 @@ body {
 #id-current-history-display {
     flex-grow: 1;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    min-height: 80px;
+    justify-content: center;
+    min-height: 100px;
+    gap: 8px;
 }
 
 .class-color-card {
-    width: 200px;
+    width: 220px;
     height: 60px;
     border: 2px solid #000;
-    border-radius: 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    padding-right: 10px;
-    position: relative;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.class-card-label-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .class-card-label {
-    position: absolute;
-    left: 10px;
     font-weight: bold;
     font-size: 1.1rem;
     color: #000;
-    text-shadow: 1px 1px 0 white;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.class-card-rgb {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333;
+    font-family: monospace;
+    margin-bottom: 4px;
 }
 
 .class-accuracy-box {
-    width: 70px;
+    width: 75px;
     height: 35px;
     background-color: rgba(255, 255, 255, 0.9);
     border: 2px solid #000;

@@ -13,20 +13,29 @@ const attemptsContainer = document.getElementById('id-div-attempts');
 const displayArea = document.getElementById('id-current-history-display');
 
 const MAX_COLOR_CODE = 255;
-const MAX_ATTEMPTS = 10;
 const MAX_DISTANCE = Math.sqrt(3 * 255 * 255);
 
-sliderElements.forEach(sliderElements => {
-    sliderElements.addEventListener('input', (event) => {
-        const currentSlider = event.target;
-        const newValue = currentSlider.value;
-        const valueSpan = currentSlider.nextElementSibling;
-        valueSpan.textContent = newValue;
+sliderElements.forEach(slider => {
+    slider.addEventListener('input', () => {
+        myGame.updateSliderLabels(); 
     });
 });
 
 submitElement.addEventListener('click', () => {
-    myGame.checkGuess();
+    if (myGame.gameOn) {
+        myGame.checkGuess();
+    }
+	else{
+        myGame.newGame();
+        
+        submitElement.textContent = "Submit";
+        submitElement.style.backgroundColor = "#333";
+        
+        const attemptPara = document.getElementById('id-para-attempt');
+        attemptPara.innerHTML = 'Attempt: <span id="id-span-attempt">1</span>';
+        
+        window.attemptsSpan = document.getElementById('id-span-attempt');
+    }
 });
 
 prevButton.addEventListener('click', () => {
@@ -43,6 +52,7 @@ class Game{
 	targetColor = null;
 	inputColor = null;
 	currentAttempt = 1;
+	unlocked = { r: false, g: false, b: false };
 	
 	attemptsHistory = [];
 	viewIndex = 0;
@@ -52,17 +62,28 @@ class Game{
     }
 
     newGame() {
-        this.targetColor = new Color();
-        this.inputColor = new Color();
-        this.currentAttempt = 1;
-        this.gameOn = true;
+		this.targetColor = new Color();
+		this.inputColor = new Color();
+		this.currentAttempt = 1;
+		this.gameOn = true;
 
-        colorSquareElement.style.backgroundColor = this.targetColor.rgbToString();
-        
-        attemptsSpan.textContent = this.currentAttempt;
+		this.attemptsHistory = [];
+		this.viewIndex = 0;
+		this.unlocked = { r: false, g: false, b: false };
 
-        console.log("Game Start");
-    }
+		const displayArea = document.getElementById('id-current-history-display');
+		displayArea.innerHTML = '<p id="id-placeholder-text">No attempts yet</p>';
+
+		colorSquareElement.style.backgroundColor = this.targetColor.rgbToString();
+		
+		const span = document.getElementById('id-span-attempt');
+		if (span) span.textContent = this.currentAttempt;
+
+		this.updateSliderLabels();
+
+		console.log("New Game Started");
+		this.targetColor.tableColors();
+}
 	
 	calculateAccuracy(){
 		const rDiff = this.targetColor.valueRed - this.inputColor.valueRed;
@@ -77,42 +98,73 @@ class Game{
 	}
 
 	createHistoryElement(score) {
+		const checkR = this.inputColor.valueRed === this.targetColor.valueRed;
+		const checkG = this.inputColor.valueGreen === this.targetColor.valueGreen;
+		const checkB = this.inputColor.valueBlue === this.targetColor.valueBlue;
+
 		const newAttempt = {
 			number: this.currentAttempt,
 			color: this.inputColor.rgbToString(),
-			accuracy: score
+			accuracy: score,
+			matches: { r: checkR, g: checkG, b: checkB }
 		};
 		
 		this.attemptsHistory.push(newAttempt);
-		
 		this.viewIndex = this.attemptsHistory.length - 1;
-
 		this.renderCurrentHistory();
 	}
 	
 	renderCurrentHistory() {
+		const displayArea = document.getElementById('id-current-history-display');
 		const attempt = this.attemptsHistory[this.viewIndex];
 
-		if (!attempt) return;
+		if (!attempt) {
+			displayArea.innerHTML = '<p id="id-placeholder-text">No attempts yet</p>';
+			return;
+		}
 
 		displayArea.innerHTML = '';
+
+		const rgbText = document.createElement('span');
+		rgbText.className = 'class-card-rgb';
+		rgbText.textContent = attempt.color;
 
 		const card = document.createElement('div');
 		card.className = 'class-color-card';
 		card.style.backgroundColor = attempt.color;
 
+		const labelContainer = document.createElement('div');
+		labelContainer.className = 'class-card-label-container';
+
 		const label = document.createElement('span');
 		label.className = 'class-card-label';
 		label.textContent = `#${attempt.number}`;
+		labelContainer.appendChild(label);
 
 		const accBox = document.createElement('div');
 		accBox.className = 'class-accuracy-box';
 		accBox.textContent = `${attempt.accuracy}%`;
 
-		card.appendChild(label);
+		card.appendChild(labelContainer);
 		card.appendChild(accBox);
+		
+		displayArea.appendChild(rgbText); 
 		displayArea.appendChild(card);
-	}		
+	}
+	
+	updateSliderLabels() {
+		const rVal = Number(redSlider.value);
+		const gVal = Number(greenSlider.value);
+		const bVal = Number(blueSlider.value);
+
+		const rSpan = redSlider.nextElementSibling;
+		const gSpan = greenSlider.nextElementSibling;
+		const bSpan = blueSlider.nextElementSibling;
+
+		rSpan.textContent = (this.unlocked.r && rVal === this.targetColor.valueRed) ? `${rVal} ✅` : rVal;
+		gSpan.textContent = (this.unlocked.g && gVal === this.targetColor.valueGreen) ? `${gVal} ✅` : gVal;
+		bSpan.textContent = (this.unlocked.b && bVal === this.targetColor.valueBlue) ? `${bVal} ✅` : bVal;
+	}
 	
 	changeView(direction) {
 		if ( this.attemptsHistory.length === 0 ){
@@ -120,31 +172,36 @@ class Game{
 		}
 		this.viewIndex = (this.viewIndex + direction + this.attemptsHistory.length) % this.attemptsHistory.length;
 		this.renderCurrentHistory();
-	}		
+	}
 	
-    checkGuess(){
-		if ( this.gameOn === false ){
-			return;
-		}
+    checkGuess() {
+		if (this.gameOn === false) return;
+
 		const r = Number(redSlider.value);
 		const g = Number(greenSlider.value);
 		const b = Number(blueSlider.value);
 		this.inputColor.updateColor(r, g, b);
 
+		if (r === this.targetColor.valueRed) this.unlocked.r = true;
+		if (g === this.targetColor.valueGreen) this.unlocked.g = true;
+		if (b === this.targetColor.valueBlue) this.unlocked.b = true;
+
 		const score = this.calculateAccuracy();
 		this.createHistoryElement(score);
-		console.log(`Result: ${score}%`);
-		
-		if( this.currentAttempt < MAX_ATTEMPTS ){
+		this.updateSliderLabels();
+
+		if (this.unlocked.r && this.unlocked.g && this.unlocked.b) {
+			this.gameOn = false;
+			
+			const attemptPara = document.getElementById('id-para-attempt');
+			attemptPara.innerHTML = `You won in ${this.currentAttempt} attempts!`;
+
+			submitElement.textContent = "New Game";		
+		}
+		else {
 			this.currentAttempt++;
 			attemptsSpan.textContent = this.currentAttempt;
 		}
-		else{
-			this.gameOn = false;
-			console.log("Game Over");
-			submitElement.disabled = true;
-		}
-		
 	}
 
 }
